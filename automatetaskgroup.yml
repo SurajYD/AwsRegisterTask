@@ -1,4 +1,21 @@
-aws ssm register-task-with-maintenance-window \
+---
+- name: Automate the aws maintenance window
+  hosts: tag_Name_ict_provisioner 
+
+  vars:
+    aws_cli_path: '/usr/bin/aws'
+    resources_grp: "{{ Name }}"
+    mw_nm: "{{ mw_name }}" 
+    operation: "{{ Operation }}" 
+   
+  tasks:
+    - name: DISPLAY Operation
+      debug:
+        var: operation        
+
+    - name: Create resource-groups and register the created group name     
+      shell: |          
+         {{aws_cli_path}} ssm register-task-with-maintenance-window \
             --region us-east-1 \
             --task-type "RUN_COMMAND" \
             --window-id mw-0e157d76aaabe7f0d \
@@ -9,3 +26,5 @@ aws ssm register-task-with-maintenance-window \
             --max-errors 1 \
             --priority 1 \
             --targets "Key=WindowTargetIds ,Values=526ab1e6-acd5-4daa-9ea6-90aa1b4da10d"
+      register: mv_output   
+      when: operation == "Create" 
