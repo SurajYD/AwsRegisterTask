@@ -1,0 +1,21 @@
+aws ssm register-task-with-maintenance-window \
+
+            --region us-east-1 \
+
+            --task-type "RUN_COMMAND" \
+
+            --window-id mw-0e157d76aaabe7f0d \
+
+            --name "WIN_Patch_Task" \
+
+            --task-arn "AWS-ApplyPatchBaseline" \
+
+            --task-invocation-parameters "{\"RunCommand\":{\"Comment\":\"\",\"DocumentVersion\":\"1\",\"Parameters\":{\"BaselineOverride\":[\"true\"],\"InstallOverrideList\":[\"true\"],\"Operation\":[\"Scan\"],\"RebootOption\":[\"RebootIfNeeded\"],\"SnapshotId\":[\"asda\"]},\"TimeoutSeconds\":600}}" \
+
+            --max-concurrency 1 \
+
+            --max-errors 1 \
+
+            --priority 1 \
+
+            --targets "Key=WindowTargetIds ,Values=526ab1e6-acd5-4daa-9ea6-90aa1b4da10d"
