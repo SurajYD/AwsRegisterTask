@@ -36,7 +36,7 @@
    
     - name : Delete registred task
       shell: |
-        {{ aws_cli_path }} ssm  deregister-task-from-maintenance-window
+        {{ aws_cli_path }} ssm  deregister-task-from-maintenance-window \
              --window-id mw-03c60bb849897205b \
              --window-task-id 3e8e67dc-2634-48a5-9cc1-275d95f75bb8
       when: operation == "Delete"
