@@ -1,11 +1,9 @@
 ---
-- name: Automate the aws maintenance window
+- name: Automate Registering task
   hosts: tag_Name_ict_provisioner 
 
   vars:
-    aws_cli_path: '/usr/bin/aws'
-    resources_grp: "{{ Name }}"
-    mw_nm: "{{ mw_name }}" 
+    aws_cli_path: '/usr/bin/aws' 
     operation: "{{ Operation }}" 
    
   tasks:
@@ -13,18 +11,18 @@
       debug:
         var: operation        
 
-    - name: Create resource-groups and register the created group name     
+    - name: Register Target group for MW    
       shell: |          
-         {{aws_cli_path}} ssm register-task-with-maintenance-window \
+        {{aws_cli_path}} ssm register-task-with-maintenance-window \
             --region us-east-1 \
             --task-type "RUN_COMMAND" \
-            --window-id mw-0e157d76aaabe7f0d \
+            --window-id mw-03c60bb849897205b \
             --name "WIN_Patch_Task" \
             --task-arn "AWS-ApplyPatchBaseline" \
             --task-invocation-parameters "{\"RunCommand\":{\"Comment\":\"\",\"DocumentVersion\":\"1\",\"Parameters\":{\"BaselineOverride\":[\"true\"],\"InstallOverrideList\":[\"true\"],\"Operation\":[\"Scan\"],\"RebootOption\":[\"RebootIfNeeded\"],\"SnapshotId\":[\"asda\"]},\"TimeoutSeconds\":600}}" \
             --max-concurrency 1 \
             --max-errors 1 \
             --priority 1 \
-            --targets "Key=WindowTargetIds ,Values=526ab1e6-acd5-4daa-9ea6-90aa1b4da10d"
+            --targets "Key=WindowTargetIds ,Values=a5743248-8698-4a08-b4ff-f628c894bf68"
       register: mv_output   
       when: operation == "Create" 
