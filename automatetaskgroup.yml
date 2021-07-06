@@ -26,10 +26,17 @@
  #           --targets "Key=WindowTargetIds ,Values=a5743248-8698-4a08-b4ff-f628c894bf68"
  #     register: mv_output   
  #     when: operation == "Create" 
-    - name : Update registered task
+ #   - name : Update registered task
+ #     shell: |
+ #       {{ aws_cli_path }} ssm update-maintenance-window-task \
+ #             --window-id mw-03c60bb849897205b \
+ #             --window-task-id 3e8e67dc-2634-48a5-9cc1-275d95f75bb8 \
+ #             --name "Win_Patch_Task_Update"
+ #    when: operation == "Update"    
+   
+    - name : Delete registred task
       shell: |
-        {{ aws_cli_path }} ssm update-maintenance-window-task \
-              --window-id mw-03c60bb849897205b \
-              --window-task-id 3e8e67dc-2634-48a5-9cc1-275d95f75bb8 \
-              --name "Win_Patch_Task_Update"
-      when: operation == "Update"        
+        {{ aws_cli_path }} ssm  deregister-task-from-maintenance-window
+             --window-id mw-03c60bb849897205b \
+             --window-task-id 3e8e67dc-2634-48a5-9cc1-275d95f75bb8
+      when: operation == "Delete"
