@@ -11,18 +11,24 @@
       debug:
         var: operation        
 
-    - name: Register Target group for MW    
-      shell: |          
-        {{aws_cli_path}} ssm register-task-with-maintenance-window \
-            --region us-east-1 \
-            --task-type "RUN_COMMAND" \
-            --window-id mw-03c60bb849897205b \
-            --name "WIN_Patch_Task" \
-            --task-arn "AWS-ApplyPatchBaseline" \
-            --task-invocation-parameters "{\"RunCommand\":{\"Comment\":\"\",\"DocumentVersion\":\"1\",\"Parameters\":{\"BaselineOverride\":[\"true\"],\"InstallOverrideList\":[\"true\"],\"Operation\":[\"Scan\"],\"RebootOption\":[\"RebootIfNeeded\"],\"SnapshotId\":[\"asda\"]},\"TimeoutSeconds\":600}}" \
-            --max-concurrency 1 \
-            --max-errors 1 \
-            --priority 1 \
-            --targets "Key=WindowTargetIds ,Values=a5743248-8698-4a08-b4ff-f628c894bf68"
-      register: mv_output   
-      when: operation == "Create" 
+ #   - name: Register task  for MW    
+ #     shell: |          
+ #       {{aws_cli_path}} ssm register-task-with-maintenance-window \
+ #           --region us-east-1 \
+ #           --task-type "RUN_COMMAND" \
+ #          --window-id mw-03c60bb849897205b \
+ #           --name "WIN_Patch_Task" \
+ #           --task-arn "AWS-ApplyPatchBaseline" \
+ #           --task-invocation-parameters "{\"RunCommand\":{\"Comment\":\"\",\"DocumentVersion\":\"1\",\"Parameters\":{\"BaselineOverride\":[\"true\"],\"InstallOverrideList\":[\"true\"],\"Operation\":[\"Scan\"],\"RebootOption\":[\"RebootIfNeeded\"],\"SnapshotId\":[\"asda\"]},\"TimeoutSeconds\":600}}" \
+ #           --max-concurrency 1 \
+ #           --max-errors 1 \
+ #           --priority 1 \
+ #           --targets "Key=WindowTargetIds ,Values=a5743248-8698-4a08-b4ff-f628c894bf68"
+ #     register: mv_output   
+ #     when: operation == "Create" 
+    - name : Update registered task
+      shell: |
+        {{ aws_cli_path }} ssm update-maintenance-window-task \
+              --window-id mw-03c60bb849897205b \
+              --window-task-id 3e8e67dc-2634-48a5-9cc1-275d95f75bb8 \
+              --name "Win_Patch_Task_Update"
