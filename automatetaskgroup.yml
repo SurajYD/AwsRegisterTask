@@ -32,3 +32,4 @@
               --window-id mw-03c60bb849897205b \
               --window-task-id 3e8e67dc-2634-48a5-9cc1-275d95f75bb8 \
               --name "Win_Patch_Task_Update"
+      when: operation == "Update"        
